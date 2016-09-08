@@ -1,8 +1,13 @@
-group 'org.jacoco'
+plugins {
+  id "com.jfrog.artifactory" version "4.4.4"
+}
+
 version '1.0-SNAPSHOT'
+group 'org.jacoco'
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
+apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -12,6 +17,7 @@ repositories {
 }
 
 dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
@@ -22,9 +28,32 @@ jacocoTestReport {
     }
 }
 
-task artifactoryPublish << {
-  logger.quiet 'Hello my friends!'
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact(file("$rootDir/build.gradle"))
+        }
+    }
 }
+
+artifactory {
+    publish {
+        contextUrl = 'http://ms1:8206/artifactory'
+        repository {
+            repoKey = "libs-snapshot-local"
+            username = "admin"
+            password = "password"
+        }
+    }
+}
+
+artifactoryPublish {
+   publications ('mavenJava')
+}
+
+tasks.artifactoryPublish.dependsOn 'generatePomFileForMavenJavaPublication'
+
 task wrapper(type: Wrapper){
   gradleVersion = '3.0'
 }
