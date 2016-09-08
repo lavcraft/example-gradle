@@ -21,3 +21,7 @@ jacocoTestReport {
         html.enabled false
     }
 }
+
+task wrapper(type: Wrapper){
+  gradleVersion = '3.0'
+}
