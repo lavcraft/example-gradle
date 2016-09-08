@@ -22,6 +22,9 @@ jacocoTestReport {
     }
 }
 
+task artifactoryPublish << {
+  logger.quiet 'Hello my friends!'
+}
 task wrapper(type: Wrapper){
   gradleVersion = '3.0'
 }
