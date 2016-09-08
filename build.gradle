@@ -39,7 +39,7 @@ publishing {
 
 artifactory {
     publish {
-        contextUrl = 'http://ms1:8206/artifactory'
+        contextUrl = 'http://ms2:8174/artifactory'
         repository {
             repoKey = "libs-snapshot-local"
             username = "admin"
